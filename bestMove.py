@@ -1,5 +1,4 @@
 import chess
-import random
 from stockfish import Stockfish 
 from gtts import gTTS  
 from playsound import playsound  
@@ -10,22 +9,18 @@ playing = True
 stockfish.set_depth(20)
 stockfish.set_skill_level(20)
 playing = True
-moves_white = ["e2e4", "a2a4", "f2f4"]
-moves_black = ["e7e5", "f7f5", "b7b5"]
-count = 0
+move = "e2e4"
 
-while playing:
-    if count % 2 == 0:
-        move = random.choice(moves_white)
-    else:
-        move = random.choice(moves_black)
+def bestMove():
+    global move
     board.push_san(move)
     stockfish.set_fen_position(board.fen())
     best_move = stockfish.get_best_move()
+    return best_move
 
-        
-        # It is a text value that we want to convert to audio  
-    text_val = 'Best Move' + str(best_move)  
+def audio():
+    # It is a text value that we want to convert to audio  
+    text_val = 'Best Move' + bestMove() 
         
         # Here are converting in English Language  
     language = 'en'  
@@ -38,11 +33,12 @@ while playing:
         
         #Here we are saving the transformed audio in a mp3 file named  
         # exam.mp3  
-    obj.save("exam.mp3")  
+    obj.save("move.mp3")  
         
         # Play the exam.mp3 file  
-    playsound("exam.mp3")  
-    count += 1
+    playsound("move.mp3")  
+
+audio()
 
 
 
